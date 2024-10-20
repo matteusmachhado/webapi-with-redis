@@ -1,7 +1,7 @@
 
 # WebAPI .NET 8 com Redis e SQL Server 2022
 
-![WebAPI with Redis](https://github.com/user-attachments/assets/fe4a74cf-47f1-4299-a56e-6646d1aaa6db)
+![WebAPI with Redis](https://github.com/user-attachments/assets/083d99a7-47ca-411b-b358-5f62ecbd9811)
 
 ## Contextualizando a ideia de Cache para APIs
 
