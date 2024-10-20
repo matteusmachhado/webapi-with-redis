@@ -1,9 +1,4 @@
 ﻿using Project.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Project.Domain.Entities
 {
@@ -21,5 +16,12 @@ namespace Project.Domain.Entities
         public string Name { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
+
+        public void Update(string name, string description, decimal price)
+        {
+            Name = name;
+            Description = description;
+            Price = price;
+        }
     }
 }

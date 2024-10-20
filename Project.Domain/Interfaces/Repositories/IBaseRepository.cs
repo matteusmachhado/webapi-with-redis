@@ -6,7 +6,7 @@ namespace Project.Domain.Interfaces.Repositories
 {
     public interface IBaseRepository <TEntity> : IDisposable where TEntity : class, IAggregateRoot
     {
-        Task<IEnumerable<TEntity>> GetAllAsync(int skip, int take, bool asNoTracking = true, CancellationToken cancellationToken = default);
+        Task<IEnumerable<TEntity>> GetAllAsync(int page, int pageSize, bool asNoTracking = true, CancellationToken cancellationToken = default);
         Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task Add(TEntity entity);
         Task Update(TEntity entity);

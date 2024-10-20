@@ -1,4 +1,5 @@
 ﻿using Project.Application.Features.Product.Commands.Create;
+using Project.Application.Features.Product.Commands.Update;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;

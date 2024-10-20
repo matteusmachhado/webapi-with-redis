@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Project.Application.Features.Product.Queries.GetAll
 {
-    public sealed record GetAllQuery(int Skip, int Take) : IRequest<IEnumerable<Response>>;
+    public sealed record GetAllQuery(int Page, int PageSize) : IRequest<IEnumerable<Response>>;
 }

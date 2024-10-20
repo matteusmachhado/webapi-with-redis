@@ -1,11 +1,7 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation.Results;
+using MediatR;
 
 namespace Project.Application.Features.Product.Commands.Create
 {
-    public sealed record CreateCommand(string Name, string Description, decimal Price) : IRequest<Unit>;
+    public sealed record CreateCommand(string Name, string Description, decimal Price) : IRequest<ValidationResult>;
 }

@@ -1,22 +1,29 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
+using Project.Application.Interfaces;
 using Project.Domain.Interfaces.Repositories;
 
 namespace Project.Application.Features.Product.Queries.GetById
 {
-    public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, Response>
+    public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, Response?>
     {
         private readonly IProductRepository _repository;
-        public GetByIdQueryHandler(IProductRepository repository)
+        private readonly IValidatorService _validator;
+
+        public GetByIdQueryHandler(IProductRepository repository,
+            IValidatorService validator)
         {
             _repository = repository;
+            _validator = validator;
         }
-        public async Task<Response> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Response?> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
             var product = await _repository.GetByIdAsync(request.Id);
 
             if (product is null)
             {
-                // todo: Not found
+                _validator.Add($"Produto: {request.Id} não encontrado.");
+
                 return null;
             }
 

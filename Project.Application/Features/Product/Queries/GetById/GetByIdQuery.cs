@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace Project.Application.Features.Product.Queries.GetById
 {
-    public sealed record GetByIdQuery (Guid Id) : IRequest<Response>;
+    public sealed record GetByIdQuery (Guid Id) : IRequest<Response?>;
 }

@@ -14,6 +14,7 @@ namespace Project.Persistence.Repositories
         protected readonly DbSet<TEntity> _dbSet;
         private readonly IDistributedCache _cache;
         private readonly JsonSerializerSettings _jsonSerializerSettings;
+        private readonly DistributedCacheEntryOptions options;
 
         protected BaseRepository(ProjectDbContext db, IDistributedCache cache)
         {
@@ -25,18 +26,22 @@ namespace Project.Persistence.Repositories
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
                 ContractResolver = new JsonConstructorPrivateResolver()
             };
+            options = new DistributedCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(5));
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(int skip, int take, bool asNoTracking = true, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(int page, int pageSize, bool asNoTracking = true, CancellationToken cancellationToken = default)
         {
-            var key = $"{typeof(TEntity).Name}:All";
+            var key = $"{typeof(TEntity).Name}-page-{page}-size-{pageSize}";
 
             string? cached = await _cache.GetStringAsync(key);
 
             IEnumerable<TEntity>? entities;
             if (string.IsNullOrEmpty(cached))
             {
-                var query = _dbSet.Skip(skip).Take(take);
+                var query = _dbSet
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize);
 
                 if (asNoTracking) query = query.AsNoTracking();
 
@@ -47,7 +52,7 @@ namespace Project.Persistence.Repositories
                     return Enumerable.Empty<TEntity>();
                 }
 
-                await _cache.SetStringAsync(key, JsonConvert.SerializeObject(entities), cancellationToken);
+                await _cache.SetStringAsync(key, JsonConvert.SerializeObject(entities), options, cancellationToken);
 
                 return entities;
             }
@@ -82,7 +87,7 @@ namespace Project.Persistence.Repositories
                     return entity;
                 }
 
-                await _cache.SetStringAsync(key, JsonConvert.SerializeObject(entity), cancellationToken);
+                await _cache.SetStringAsync(key, JsonConvert.SerializeObject(entity), options, cancellationToken);
 
                 return entity;
             }

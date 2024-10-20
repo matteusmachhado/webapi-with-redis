@@ -37,6 +37,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Serviços
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IValidatorService, ValidatorService>();
 
 // MediatR
 builder.Services.AddMediatR(x =>
