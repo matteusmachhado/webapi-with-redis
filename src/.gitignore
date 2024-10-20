@@ -396,3 +396,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+../docker/secrets
+../docker/data
+../docker/log
+../docker/path
