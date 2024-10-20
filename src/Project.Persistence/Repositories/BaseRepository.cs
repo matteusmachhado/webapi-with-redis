@@ -5,6 +5,7 @@ using Project.Domain.Interfaces;
 using Project.Domain.Interfaces.Repositories;
 using Project.Persistence.Contexts;
 using Project.Persistence.Infrastructure;
+using System.Linq.Expressions;
 
 namespace Project.Persistence.Repositories
 {
@@ -30,7 +31,11 @@ namespace Project.Persistence.Repositories
                 .SetSlidingExpiration(TimeSpan.FromMinutes(5));
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(int page, int pageSize, bool asNoTracking = true, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(int page, 
+            int pageSize,
+            Expression<Func<TEntity, object>> orderBy, 
+            bool asNoTracking = true, 
+            CancellationToken cancellationToken = default)
         {
             var key = $"{typeof(TEntity).Name}-page-{page}-size-{pageSize}";
 
@@ -40,6 +45,7 @@ namespace Project.Persistence.Repositories
             if (string.IsNullOrEmpty(cached))
             {
                 var query = _dbSet
+                    .OrderBy(orderBy)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize);
 

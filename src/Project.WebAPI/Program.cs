@@ -1,6 +1,5 @@
 using Project.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Project.WebAPI.Middlewares;
 using Project.Domain.Interfaces.Repositories;
 using Project.Persistence.Repositories;
 using Project.Application.Interfaces;
@@ -8,6 +7,8 @@ using Project.Application.Services;
 using Project.Application.Features;
 using Project.Domain.Interfaces;
 using Project.Persistence;
+using Project.WebAPI;
+using Microsoft.Extensions.Logging.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.RunMigrations();
 

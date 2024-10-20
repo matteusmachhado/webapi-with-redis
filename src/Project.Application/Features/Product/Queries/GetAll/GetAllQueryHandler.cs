@@ -13,7 +13,9 @@ namespace Project.Application.Features.Product.Queries.GetAll
 
         public async Task<IEnumerable<Response>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var products = await _repository.GetAllAsync(request.Page, request.PageSize);
+            var products = await _repository.GetAllAsync(request.Page, 
+                request.PageSize, 
+                orderBy: p => p.Price);
 
             if (products is null) return Enumerable.Empty<Response>();
 

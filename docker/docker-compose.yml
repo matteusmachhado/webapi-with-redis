@@ -1,7 +1,7 @@
 services:
 
   redis:
-    container_name: redis
+    container_name: redis-cache
     image: redis:latest
     ports:
       - "6379:6379"
@@ -51,6 +51,23 @@ services:
       /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P P@ssw0rd -i /var/opt/mssql/scripts/setup.sql && 
       wait
       "
+  
+  web-api:
+    image: matteusmachhado/webapi-with-redis
+    container_name: webapi
+    build:
+      context: ../
+      dockerfile: ./src/Project.WebApi/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5001
+    networks:
+      - local
+    depends_on:
+      - mssql
+      - redis
 
 networks:
   local:
